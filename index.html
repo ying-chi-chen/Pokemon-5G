@@ -442,12 +442,11 @@ const TEAMS=[
 ];
 const INITIAL_STUDENTS=[{"id": 1, "name": "劉桀寧", "team": "yellow", "xp": 0}, {"id": 2, "name": "洪晟睿", "team": "yellow", "xp": 0}, {"id": 3, "name": "紀浩澤", "team": "yellow", "xp": 0}, {"id": 4, "name": "許劭維", "team": "yellow", "xp": 0}, {"id": 5, "name": "謝秉祐", "team": "orange", "xp": 0}, {"id": 6, "name": "趙子慷", "team": "orange", "xp": 0}, {"id": 7, "name": "陳一禛", "team": "orange", "xp": 0}, {"id": 8, "name": "陳楷文", "team": "orange", "xp": 0}, {"id": 9, "name": "韓東峻", "team": "purple", "xp": 0}, {"id": 10, "name": "黃祈詠", "team": "purple", "xp": 0}, {"id": 11, "name": "劉以璇", "team": "purple", "xp": 0}, {"id": 12, "name": "戴慕恩", "team": "purple", "xp": 0}, {"id": 13, "name": "林侑潔", "team": "green", "xp": 0}, {"id": 14, "name": "楊喻婷", "team": "green", "xp": 0}, {"id": 15, "name": "楊芃羭", "team": "green", "xp": 0}, {"id": 16, "name": "溫婕瑀", "team": "green", "xp": 0}, {"id": 17, "name": "簡辰芸", "team": "brown", "xp": 0}, {"id": 18, "name": "董宥岑", "team": "brown", "xp": 0}, {"id": 19, "name": "蔡佳諭", "team": "brown", "xp": 0}, {"id": 20, "name": "謝晨蕙", "team": "brown", "xp": 0}, {"id": 21, "name": "陳彥欣", "team": "light", "xp": 0}, {"id": 22, "name": "陳玟霏", "team": "light", "xp": 0}, {"id": 23, "name": "陳畇臻", "team": "light", "xp": 0}, {"id": 24, "name": "黃妍熙", "team": "light", "xp": 0}];
 const BADGE_LEVELS=[
-["Lv.1","新手訓練家","0–29 分","⭐"],
-["Lv.2","見習訓練家","30–59 分","🌿"],
-["Lv.3","實習訓練家","60–89 分","💧"],
-["Lv.4","熟練訓練家","90–119 分","🔥"],
-["Lv.5","資深訓練家","120–159 分","👻"],
-["Lv.6","大師訓練家","160 分以上","🌈"]
+["Lv.1","新手訓練家","0–14 分","⭐"],
+["Lv.2","見習訓練家","15–20 分","🌿"],
+["Lv.3","實習訓練家","21–25 分","💧"],
+["Lv.4","熟練訓練家","26–29 分","🔥"],
+["Lv.5","大師訓練家","30 分以上","🌈"]
 ];
 let students=load("students",null); if(!Array.isArray(students)||students.length!==24) students=structuredClone(INITIAL_STUDENTS);
 let missions=load("missions",[])||[], picked=new Set(), pickLog=[], timerSec=300, timerID=null;
@@ -456,7 +455,7 @@ function save(){localStorage.setItem("pk5g_v4_students",JSON.stringify(students)
 function T(id){return TEAMS.find(t=>t.id===id)}
 function esc(x){return String(x).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
 function txp(id){return students.filter(s=>s.team===id).reduce((a,s)=>a+s.xp,0)}
-function level(xp){return xp>=160?BADGE_LEVELS[5]:xp>=120?BADGE_LEVELS[4]:xp>=90?BADGE_LEVELS[3]:xp>=60?BADGE_LEVELS[2]:xp>=30?BADGE_LEVELS[1]:BADGE_LEVELS[0]}
+function level(xp){return xp>=30?BADGE_LEVELS[4]:xp>=26?BADGE_LEVELS[3]:xp>=21?BADGE_LEVELS[2]:xp>=15?BADGE_LEVELS[1]:BADGE_LEVELS[0]}
 function teamCard(t){let i=TEAMS.findIndex(x=>x.id===t.id),x=txp(t.id),n=students.filter(s=>s.team===t.id).length;return `<div class="card team" style="--team:${t.color}"><img class="character" src="${TEAM_IMAGES[i]}" alt="${t.poke}"><h3>${t.emoji} ${t.zh}｜${t.en}</h3><div class="muted">${t.poke} · ${n} 位訓練家</div><div class="xp">${x} XP</div><div class="progress"><i style="width:${Math.min(100,x)}%"></i></div><div class="small muted">${x}/100 隊伍目標</div></div>`}
 function render(){
 let e;

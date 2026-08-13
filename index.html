@@ -418,7 +418,7 @@ footer{text-align:center;color:var(--muted);padding:25px}
 <section id="data">
 <div class="hero"><h2>💾 Data Center｜班級資料</h2>
 <div class="notice">本版為本機版：資料會儲存在此瀏覽器。尚未接 Google 雲端資料庫。</div>
-<div class="row" style="margin-top:14px"><button class="primary" onclick="exportData()">⬇️ 匯出班級資料</button><label class="btn">⬆️ 匯入資料<input id="importFile" type="file" accept=".json" style="display:none" onchange="importData(event)"></label><button class="danger" onclick="resetAll()">⚠️ 重設資料</button></div>
+<div class="row" style="margin-top:14px"><button class="primary" onclick="exportData()">⬇️ 匯出班級資料</button><label class="btn">⬆️ 匯入資料<input id="importFile" type="file" accept=".json" style="display:none" onchange="importData(event)"></label><button class="danger" onclick="resetDailyXP()">🔄 每日積分重置</button><button class="danger" onclick="resetDailyBoard()">📋 每日黑板重置</button><button class="danger" onclick="resetAll()">⚠️ 完整資料重設</button></div>
 </div></section>
 </main>
 <footer>Pokémon 五己 Classroom Hub｜24 位訓練家＋六隊角色圖示＋三張班級說明圖</footer>
@@ -515,7 +515,34 @@ function toggleMission(i){missions[i].done=!missions[i].done;save();render()}fun
 function saveBoard(){localStorage.setItem("pk5g_v4_board",JSON.stringify({weather:weather.value,job:classJob.value,mission:boardMission.value}));alert("📋 今日黑板已儲存")}
 function exportData(){let data={version:"2026-08-10-v4",students,missions,board:JSON.parse(localStorage.getItem("pk5g_v4_board")||"null")};let a=document.createElement("a");a.href=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:"application/json"}));a.download="Pokemon_5G_Classroom_Backup.json";a.click();URL.revokeObjectURL(a.href)}
 function importData(e){let f=e.target.files[0];if(!f)return;let r=new FileReader();r.onload=()=>{try{let d=JSON.parse(r.result);if(!Array.isArray(d.students))throw Error();students=d.students;missions=Array.isArray(d.missions)?d.missions:[];if(d.board)localStorage.setItem("pk5g_v4_board",JSON.stringify(d.board));save();render();alert("✅ 班級資料已匯入")}catch{alert("❌ 匯入失敗")}};r.readAsText(f)}
-function resetAll(){if(confirm("確定要清除本機資料並回復這 24 位學生名單嗎？")){localStorage.removeItem("pk5g_v4_students");localStorage.removeItem("pk5g_v4_missions");localStorage.removeItem("pk5g_v4_board");location.reload()}}
+function resetDailyXP(){
+  if(confirm("確定要把 24 位訓練家的目前 XP 全部歸零嗎？\n學生名單、隊伍與角色不會刪除。")){
+    students.forEach(s=>s.xp=0);
+    save();
+    render();
+    alert("🔄 每日積分已重置為 0");
+  }
+}
+function resetDailyBoard(){
+  if(confirm("確定要重置今日黑板資料嗎？\n天氣、今日工作、黑板任務與任務清單都會清空。")){
+    localStorage.removeItem("pk5g_v4_board");
+    localStorage.removeItem("pk5g_v4_missions");
+    weather.value="☀️";
+    classJob.value="";
+    boardMission.value="";
+    missions=[];
+    render();
+    alert("📋 每日黑板已重置");
+  }
+}
+function resetAll(){
+  if(confirm("確定要清除本機資料並回復這 24 位學生名單嗎？")){
+    localStorage.removeItem("pk5g_v4_students");
+    localStorage.removeItem("pk5g_v4_missions");
+    localStorage.removeItem("pk5g_v4_board");
+    location.reload();
+  }
+}
 document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>{document.querySelectorAll("nav button").forEach(x=>x.classList.remove("active"));b.classList.add("active");document.querySelectorAll("main section").forEach(x=>x.classList.remove("show"));document.getElementById(b.dataset.tab).classList.add("show")});
 teamInput.innerHTML=TEAMS.map(t=>`<option value="${t.id}">${t.zh}｜${t.en}</option>`).join("");
 boardDate.textContent=new Date().toLocaleDateString("zh-TW",{year:"numeric",month:"long",day:"numeric"});

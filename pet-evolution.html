@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pokemon-5G｜五階寵物進化圖鑑</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:"Noto Sans TC","Microsoft JhengHei",sans-serif;background:linear-gradient(#8edcf5,#e8f8ee 48%,#c9e9b3);color:#163f64}
+header{background:linear-gradient(90deg,#0871bf,#258fdf);color:#fff;padding:15px 22px;display:flex;align-items:center;gap:14px;position:sticky;top:0;z-index:5}.brand{font-size:25px;font-weight:900}.sub{font-size:12px}.nav{margin-left:auto}.nav a{color:#17466c;background:#fff;text-decoration:none;padding:10px 16px;border-radius:16px;font-weight:900}
+main{max-width:1450px;margin:auto;padding:24px}.hero{background:#ffffffdf;border:3px solid #fff;border-radius:25px;padding:20px 25px;margin-bottom:18px}h1{margin:0;color:#125085}.hint{font-weight:800;color:#4d8053;margin-top:5px}
+.route{background:#ffffffdd;border-radius:24px;padding:18px;margin-bottom:18px;box-shadow:0 8px 20px #31576b22}.routehead{display:flex;align-items:center;gap:12px;margin-bottom:12px}.icon{width:48px;height:48px;border-radius:15px;display:grid;place-items:center;font-size:28px;background:var(--bg)}h2{margin:0}.stages{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}.stage{border:3px solid var(--c);border-radius:18px;padding:12px;text-align:center;background:linear-gradient(#fff,#f8fbff)}.lv{display:inline-block;background:var(--c);color:#fff;border-radius:12px;padding:4px 10px;font-weight:900}.egg{font-size:42px;margin:9px 0 5px}.name{font-size:19px;font-weight:900}.subname{font-size:12px;color:#60798d;margin-top:4px;min-height:18px}.branch{margin-top:7px;font-size:12px;font-weight:900;color:#a34a4a}.rules{background:#fff8dc;border:2px solid #d0ac5b;border-radius:16px;padding:12px 16px;font-weight:800;margin-top:16px}
+@media(max-width:850px){.stages{grid-template-columns:repeat(2,1fr)}.nav{display:none}}
+</style></head><body>
+<header><div style="font-size:35px">🔴⚪</div><div><div class="brand">Pokemon-5G</div><div class="sub">Classroom Hub</div></div><div class="nav"><a href="pet-mode.html">🥚 回到寵物蛋</a></div></header>
+<main><section class="hero"><h1>🌟 五階寵物進化圖鑑</h1><div class="hint">依照你提供的進化圖：蛋 → Lv.1 → Lv.2 → Lv.3 → Lv.4 → Lv.5；其中部分路線在 Lv.5 有分歧。</div></section>
+<div id="routes"></div>
+<div class="rules">🥚 <b>進化規則</b>：寵物蛋本身不列入五個進化階段；成長值達到 20、40、60、80、100 時，依序進入 Lv.1～Lv.5。Lv.5 為最終階段；有分歧的路線會在 Lv.5 顯示兩種結果。</div>
+</main>
+<script>
+const routes=[
+["⚡","皮卡丘","#ffd957",["皮丘","皮卡丘","雷丘","阿羅拉雷丘","超級雷丘"],["Pichu","Pikachu","Raichu","Alolan Raichu","Super Raichu"]],
+["🔥","噴火龍","#ff704d",["小火龍","火恐龍","噴火龍","超級噴火龍 X","超級噴火龍 Y"],["Charmander","Charmeleon","Charizard","Mega Charizard X","Mega Charizard Y"]],
+["👻","耿鬼","#8c5bd6",["鬼斯","鬼斯通","耿鬼","超級耿鬼","超級耿鬼"],["Gastly","Haunter","Gengar","Mega Gengar","Mega Gengar"]],
+["🥊","路卡利歐","#3d9eea",["利歐路","路卡利歐","超級路卡利歐","鋼岩路卡利歐","覺醒路卡利歐"],["Riolu","Lucario","Mega Lucario","Steel-Rock Lucario","Awakened Lucario"]],
+["🌸","伊布","#d7a15e",["伊布","火伊布","水伊布","雷伊布","太陽伊布／月亮伊布"],["Eevee","Flareon","Vaporeon","Jolteon","Espeon / Umbreon"]],
+["💧","水躍鴨","#35a9e8",["潤水鴨","激躍鴨","狂歡浪鴨","優雅浪鴨","超級浪鴨"],["Quaxly","Quaxwell","Quaquaval","Elegant Quaquaval","Super Quaquaval"]]
+];
+const box=document.getElementById("routes");
+routes.forEach(r=>{let el=document.createElement("section");el.className="route";el.innerHTML='<div class="routehead"><div class="icon" style="--bg:'+r[2]+'33">'+r[0]+'</div><div><h2>'+r[1]+'進化線</h2><div style="font-weight:800;color:#61788b">蛋 → 五階進化</div></div></div><div class="stages">'+r[3].map((n,i)=>'<div class="stage" style="--c:'+r[2]+'"><span class="lv">Lv.'+(i+1)+'</span><div class="egg">'+(i===0?'🐣':'✨')+'</div><div class="name">'+n+'</div><div class="subname">'+r[4][i]+'</div>'+(i===4&&(n.includes("／")||n.includes(" X")||n.includes(" Y"))?'<div class="branch">✦ Lv.5 分歧／最終型</div>':'')+'</div>').join("")+'</div>';box.appendChild(el)});
+</script></body></html>

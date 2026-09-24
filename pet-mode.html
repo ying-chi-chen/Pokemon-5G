@@ -1,1 +1,138 @@
-<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>🐾 班級寵物</title><style>body{font-family:system-ui,"Microsoft JhengHei",sans-serif;margin:0;background:linear-gradient(135deg,#f6f0ff,#eaf8ff);color:#263238}.wrap{max-width:1000px;margin:auto;padding:20px}header{background:#6c63ff;color:#fff;padding:24px}.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0}.tab,button,select{border:0;border-radius:12px;padding:11px 14px;font-size:15px}.tab{background:#fff}.active{background:#6c63ff!important;color:#fff}.panel{display:none}.panel.show{display:block}.card{background:#fff;border-radius:20px;padding:18px;margin:14px 0;box-shadow:0 5px 18px #0001}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px}.task{text-align:left;background:#f7f6ff;cursor:pointer}.pet{text-align:center;background:#faf9ff}.emoji{font-size:56px}.plus{color:#16834a}.minus{color:#c0392b}.bar{height:10px;background:#e5e5ee;border-radius:9px;overflow:hidden}.fill{height:100%;background:#7b68ee}</style></head><body><header><div class="wrap"><h1>🐾 班級寵物</h1><div>Pokemon 5-G Classroom Hub</div></div></header><main class="wrap"><div class="tabs"><button class="tab active" onclick="tab('tasks',this)">🎯 每日任務</button><button class="tab" onclick="tab('pets',this)">🥚 寵物圖鑑</button><button class="tab" onclick="tab('logs',this)">📋 今日紀錄</button></div><section id="tasks" class="panel show"><div class="card"><h2>選擇學生</h2><select id="student"><option value="">請選擇座號</option><option>01</option><option>02</option><option>03</option><option>04</option><option>05</option><option>06</option><option>07</option><option>08</option><option>09</option><option>10</option><option>11</option><option>12</option><option>13</option><option>14</option><option>15</option><option>16</option><option>17</option><option>18</option><option>19</option><option>20</option><option>21</option><option>22</option><option>23</option><option>24</option></select></div><div class="card"><h2>🌟 加分任務</h2><div class="grid"><button class="task" onclick="add('作業完成繳交',1)">📚 <b class="plus">作業完成繳交 ＋1</b></button><button class="task" onclick="add('整理桌面、椅子靠上',1)">🪑 <b class="plus">整理桌面、椅子靠上 ＋1</b></button><button class="task" onclick="add('說英文',1)">🇬🇧 <b class="plus">說英文 ＋1</b></button><button class="task" onclick="add('幫助同學',1)">🤝 <b class="plus">幫助同學 ＋1</b></button></div></div><div class="card"><h2>⚠️ 扣分任務</h2><div class="grid"><button class="task" onclick="add('沒靠椅子',-1)">🪑 <b class="minus">沒靠椅子 −1</b></button><button class="task" onclick="add('上課遲到',-1)">⏰ <b class="minus">上課遲到 −1</b></button><button class="task" onclick="add('提醒 3 次',-1)">🔔 <b class="minus">提醒 3 次 −1</b></button></div></div></section><section id="pets" class="panel"><div class="card"><h2>🥚 六條進化線</h2><div class="grid" id="pets"></div></div></section><section id="logs" class="panel"><div class="card"><h2>📋 今日紀錄</h2><div id="logs"></div></div></section></main><script>const lines=[['皮卡丘線',['🥚','⚡','🐹','⚡🐭','🌟']],['噴火龍線',['🥚','🔥','🦎','🐲','🐉']],['耿鬼線',['🥚','👻','😈','👻💜','🌑']],['路卡利歐線',['🥚','🐶','🥋','💙','✨']],['伊布線',['🥚','🦊','🦊','✨🦊','🌈']],['水躍鴨線',['🥚','🦆','💧🦆','🌊','💦✨']]];const K='p5g-pets';function data(){return JSON.parse(localStorage.getItem(K)||'{}')}function save(x){localStorage.setItem(K,JSON.stringify(x))}function add(t,n){var s=document.getElementById('student').value;if(!s)return alert('請先選擇學生！');var d=data();if(!d[s])d[s]={points:0,logs:[]};d[s].points=Math.max(0,d[s].points+n);d[s].logs.unshift({t:t,n:n,at:new Date().toLocaleTimeString('zh-TW',{hour:'2-digit',minute:'2-digit'})});save(d);renderLogs();alert('已記錄：座號 '+s+'｜'+t+' '+(n>0?'+1':'-1'))}function renderLogs(){var d=data(),a=[];Object.keys(d).forEach(function(s){(d[s].logs||[]).forEach(function(x){a.push({s:s,t:x.t,n:x.n,at:x.at})})});document.getElementById('logs').innerHTML=a.length?a.map(function(x){return '<p>座號 '+x.s+'｜'+x.t+'｜'+(x.n>0?'+1':'-1')+'｜'+x.at+'</p>'}).join(''):'尚無紀錄'}function tab(id,b){document.querySelectorAll('.panel').forEach(function(x){x.classList.remove('show')});document.getElementById(id).classList.add('show');document.querySelectorAll('.tab').forEach(function(x){x.classList.remove('active')});b.classList.add('active');if(id==='logs')renderLogs()}document.getElementById('pets').innerHTML=lines.map(function(x){return '<div class="card pet"><div class="emoji">'+x[1][0]+'</div><h3>'+x[0]+'</h3><div>Lv.1 → Lv.5</div><div class="bar"><div class="fill" style="width:20%"></div></div></div>'}).join('');renderLogs();</script></body></html>
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>🐾 班級寵物｜Pokemon 5-G</title>
+<style>
+:root{--green:#77c96b;--orange:#f5a33b;--blue:#5c91dc;--purple:#7d72df;--ink:#405047;--cream:#fffaf0}
+*{box-sizing:border-box}
+body{margin:0;font-family:"Noto Sans TC","Microsoft JhengHei",system-ui,sans-serif;color:var(--ink);background:#eef7e9}
+body:before{content:"";position:fixed;inset:0;z-index:-2;background:linear-gradient(#dff1d8 0 18%,#eef7e9 45%,#e9f5df 100%)}
+.wrap{max-width:1180px;margin:auto;padding:0 22px}
+header{position:relative;overflow:hidden;padding:24px 0 18px;background:linear-gradient(180deg,#d8efc9,#eaf5dd);border-bottom:1px solid #c8dfbc}
+header:after{content:"🌿  🌿  🌿";position:absolute;right:4%;top:8px;font-size:38px;opacity:.45}
+.brand{display:flex;align-items:center;gap:16px}
+.paw{width:68px;height:68px;border-radius:20px;background:#a9784f;color:#fff;display:grid;place-items:center;font-size:39px;box-shadow:0 5px 0 #805638}
+h1{margin:0;color:#fff;text-shadow:0 3px 0 #9a6b47;font-size:34px;letter-spacing:2px}
+.subtitle{margin:7px 0 0;color:#63715e;font-size:15px}
+.board{display:inline-block;background:#a9784f;border-radius:10px 10px 18px 18px;padding:8px 20px;margin-top:8px;box-shadow:0 5px 0 #805638}
+.board span{color:#fff;font-weight:900;font-size:26px}
+.tabs{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;padding:18px 0}
+.tab{border:0;background:#fff;color:#657067;border-radius:24px;padding:13px 25px;font-size:16px;font-weight:800;box-shadow:0 3px 10px #48643b22;cursor:pointer}
+.tab.active{background:var(--orange);color:#fff;box-shadow:0 4px 0 #d98925}
+.panel{display:none}.panel.show{display:block}
+.toolbar{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin:4px 0 16px}
+.select{border:2px solid #dbe8d5;background:#fff;border-radius:14px;padding:11px 14px;font-size:15px}
+.hint{color:#728072;font-size:14px}
+.pet-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.pet{position:relative;background:rgba(255,255,255,.88);border:1px solid #dce9d7;border-radius:22px;padding:12px 12px 16px;box-shadow:0 6px 18px #506c4420;overflow:hidden}
+.pet:before{content:"";display:block;height:145px;border-radius:16px;background:radial-gradient(circle at 50% 35%,#fff 0 8%,transparent 9%),linear-gradient(145deg,#dff2d5,#f7f2df)}
+.pet .art{position:absolute;top:24px;left:0;right:0;text-align:center;font-size:86px;filter:drop-shadow(0 5px 3px #54734a33)}
+.pet .top{display:flex;justify-content:space-between;align-items:center;margin:12px 4px 2px;font-weight:900;font-size:18px}
+.level{font-size:15px;color:#7a7468}
+.growth{display:flex;justify-content:space-between;margin:7px 4px 5px;font-size:14px;color:#6c776b}
+.bar{height:11px;border-radius:20px;background:#e3e8df;overflow:hidden}.fill{height:100%;border-radius:20px;background:var(--green)}
+.adopt{display:block;width:100%;border:0;border-radius:18px;background:var(--orange);color:#fff;font-weight:900;padding:10px;margin-top:11px;cursor:pointer}.adopt:disabled{background:#cfd6cd;cursor:not-allowed}
+.badge{position:absolute;top:20px;left:20px;background:#ffffffdd;border-radius:12px;padding:5px 9px;font-size:12px;font-weight:900}
+.task-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.task{border:0;border-radius:18px;padding:18px;background:#fff;text-align:left;box-shadow:0 5px 14px #48643b18;cursor:pointer}
+.task:hover,.pet:hover{transform:translateY(-2px)}
+.task .icon{font-size:28px}.task b{display:block;margin-top:8px;font-size:16px}.plus{color:#258c4d}.minus{color:#c24c4c}
+.card{background:#ffffffdd;border:1px solid #dce9d7;border-radius:22px;padding:20px;margin-bottom:18px;box-shadow:0 5px 16px #48643b14}
+.challenge,.rank{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;padding:13px 0;border-bottom:1px solid #e8eee4}.challenge:last-child,.rank:last-child{border-bottom:0}
+.ranknum{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:#e8f1e3;font-weight:900}
+.rankrow{display:flex;align-items:center;gap:12px}
+.log{padding:10px 0;border-bottom:1px solid #e6ede2}.empty{color:#819080;text-align:center;padding:30px}
+footer{text-align:center;color:#819080;padding:28px 0}
+@media(max-width:900px){.pet-grid{grid-template-columns:repeat(2,1fr)}.task-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.pet-grid,.task-grid{grid-template-columns:1fr}.wrap{padding:0 12px}h1{font-size:27px}.tab{padding:11px 15px}}
+</style>
+</head>
+<body>
+<header>
+<div class="wrap">
+<div class="brand"><div class="paw">🐾</div><div><div class="board"><span>班級寵物</span></div><div class="subtitle">一起養育，讓牠們茁壯成長！　｜　小小行動，成就大大的溫暖</div></div></div>
+</div>
+</header>
+
+<main class="wrap">
+<nav class="tabs">
+<button class="tab active" onclick="showTab('mine',this)">🐾 我的寵物</button>
+<button class="tab" onclick="showTab('dex',this)">📖 寵物圖鑑</button>
+<button class="tab" onclick="showTab('tasks',this)">🏆 任務挑戰</button>
+<button class="tab" onclick="showTab('rank',this)">📊 班級排行</button>
+</nav>
+
+<section id="mine" class="panel show">
+<div class="toolbar">
+<div><h2 style="margin:0 0 5px">🐣 我的寵物</h2><div class="hint">選擇學生後，可以替他的寵物累積成長值。</div></div>
+<select class="select" id="student" onchange="renderMine()"><option value="">選擇座號</option><option value="01">座號 01</option><option value="02">座號 02</option><option value="03">座號 03</option><option value="04">座號 04</option><option value="05">座號 05</option><option value="06">座號 06</option><option value="07">座號 07</option><option value="08">座號 08</option><option value="09">座號 09</option><option value="10">座號 10</option><option value="11">座號 11</option><option value="12">座號 12</option><option value="13">座號 13</option><option value="14">座號 14</option><option value="15">座號 15</option><option value="16">座號 16</option><option value="17">座號 17</option><option value="18">座號 18</option><option value="19">座號 19</option><option value="20">座號 20</option><option value="21">座號 21</option><option value="22">座號 22</option><option value="23">座號 23</option><option value="24">座號 24</option></select>
+</div>
+<div id="mineGrid" class="pet-grid"></div>
+</section>
+
+<section id="dex" class="panel">
+<div class="card"><h2>📖 寵物圖鑑</h2><p class="hint">每條進化線共 5 個階段。成長值達到門檻後進化。</p><div id="dexGrid" class="pet-grid"></div></div>
+</section>
+
+<section id="tasks" class="panel">
+<div class="card"><h2>🏆 任務挑戰</h2><div class="toolbar"><span class="hint">先選擇學生，再點擊今天完成的行為。</span><select class="select" id="taskStudent" onchange="syncStudent(this.value)"><option value="">選擇座號</option><option value="01">座號 01</option><option value="02">座號 02</option><option value="03">座號 03</option><option value="04">座號 04</option><option value="05">座號 05</option><option value="06">座號 06</option><option value="07">座號 07</option><option value="08">座號 08</option><option value="09">座號 09</option><option value="10">座號 10</option><option value="11">座號 11</option><option value="12">座號 12</option><option value="13">座號 13</option><option value="14">座號 14</option><option value="15">座號 15</option><option value="16">座號 16</option><option value="17">座號 17</option><option value="18">座號 18</option><option value="19">座號 19</option><option value="20">座號 20</option><option value="21">座號 21</option><option value="22">座號 22</option><option value="23">座號 23</option><option value="24">座號 24</option></select></div>
+<h3>🌟 加分任務</h3><div class="task-grid">
+<button class="task" onclick="add('作業完成繳交',1)"><span class="icon">📚</span><b class="plus">作業完成繳交 ＋1</b></button>
+<button class="task" onclick="add('整理桌面、椅子靠上',1)"><span class="icon">🪑</span><b class="plus">整理桌面、椅子靠上 ＋1</b></button>
+<button class="task" onclick="add('說英文',1)"><span class="icon">🇬🇧</span><b class="plus">說英文 ＋1</b></button>
+<button class="task" onclick="add('幫助同學',1)"><span class="icon">🤝</span><b class="plus">幫助同學 ＋1</b></button>
+</div>
+<h3 style="margin-top:24px">⚠️ 扣分任務</h3><div class="task-grid">
+<button class="task" onclick="add('沒靠椅子',-1)"><span class="icon">🪑</span><b class="minus">沒靠椅子 −1</b></button>
+<button class="task" onclick="add('上課遲到',-1)"><span class="icon">⏰</span><b class="minus">上課遲到 −1</b></button>
+<button class="task" onclick="add('提醒 3 次',-1)"><span class="icon">🔔</span><b class="minus">提醒 3 次 −1</b></button>
+</div>
+<p class="hint">※ 目前「提醒 3 次」設定為累積三次提醒後扣 1。</p></div>
+<div class="card"><h2>📋 今日紀錄</h2><div id="logs"></div></div>
+</section>
+
+<section id="rank" class="panel">
+<div class="card"><h2>📊 班級排行</h2><div id="ranking"></div></div>
+</section>
+</main>
+<footer>🐾 Pokemon 5-G Classroom Hub · 班級寵物系統</footer>
+
+<script>
+const lines=[
+{name:'皮卡丘線',icons:['🥚','⚡','🐹','⚡🐭','🌟'],color:'#f2c94c'},
+{name:'噴火龍線',icons:['🥚','🔥','🦎','🐲','🐉'],color:'#ed8b43'},
+{name:'耿鬼線',icons:['🥚','👻','😈','👻💜','🌑'],color:'#8064b8'},
+{name:'路卡利歐線',icons:['🥚','🐶','🥋','💙','✨'],color:'#4d8fd8'},
+{name:'伊布線',icons:['🥚','🦊','🦊','✨🦊','🌈'],color:'#b98254'},
+{name:'水躍鴨線',icons:['🥚','🦆','💧🦆','🌊','💦✨'],color:'#5ba9dc'}
+];
+const K='p5g-pets-v2';
+function data(){return JSON.parse(localStorage.getItem(K)||'{}')}
+function save(x){localStorage.setItem(K,JSON.stringify(x))}
+function level(points){return Math.min(5,Math.floor(Math.max(0,points)/20)+1)}
+function lineFor(s){return lines[(parseInt(s||'1',10)-1)%lines.length]}
+function renderMine(){
+const s=document.getElementById('student').value;
+if(!s){document.getElementById('mineGrid').innerHTML='<div class="card empty" style="grid-column:1/-1">👆 請先選擇學生，開始查看寵物！</div>';return}
+const d=data();const p=d[s]||{points:0};const lv=level(p.points);const line=lineFor(s);const icon=line.icons[lv-1];const pct=p.points%20*5;
+document.getElementById('mineGrid').innerHTML='<article class="pet"><span class="badge">成長中</span><div class="art">'+icon+'</div><div class="top"><span>'+line.name+'</span><span class="level">Lv.'+lv+'</span></div><div class="growth"><span>成長值</span><b>'+p.points+' / '+(lv<5?lv*20:100)+'</b></div><div class="bar"><div class="fill" style="width:'+pct+'%;background:'+line.color+'"></div></div><button class="adopt" onclick="alert(\'請到「任務挑戰」累積成長值！\')">領養／照顧</button></article>';
+}
+function renderDex(){
+document.getElementById('dexGrid').innerHTML=lines.map(function(p){return '<article class="pet"><div class="art">'+p.icons[0]+'</div><div class="top"><span>'+p.name+'</span><span class="level">5 階</span></div><div style="display:flex;justify-content:space-around;font-size:31px;padding:8px 0">'+p.icons.map(function(x){return '<span>'+x+'</span>'}).join('')+'</div><div class="bar"><div class="fill" style="width:100%;background:'+p.color+'"></div></div><small>Lv.1 → Lv.5</small></article>'}).join('');
+}
+function syncStudent(v){document.getElementById('student').value=v;renderMine()}
+function add(t,n){
+const s=document.getElementById('taskStudent').value||document.getElementById('student').value;
+if(!s){alert('請先選擇學生！');return}
+const d=data();if(!d[s])d[s]={points:0,logs:[]};d[s].points=Math.max(0,d[s].points+n);d[s].logs=d[s].logs||[];d[s].logs.unshift({t:t,n:n,at:new Date().toLocaleTimeString('zh-TW',{hour:'2-digit',minute:'2-digit'})});save(d);
+document.getElementById('student').value=s;renderMine();renderLogs();renderRank();alert('已記錄：座號 '+s+'｜'+t+' '+(n>0?'+1':'-1'));
+}
+function renderLogs(){const d=data(),a=[];Object.keys(d).forEach(function(s){(d[s].logs||[]).forEach(function(x){a.push({s:s,...x})})});document.getElementById('logs').innerHTML=a.length?a.map(function(x){return '<div class="log">座號 <b>'+x.s+'</b>｜'+x.t+'｜<b style="color:'+(x.n>0?'#258c4d':'#c24c4c')+'">'+(x.n>0?'+1':'-1')+'</b>｜'+x.at+'</div>'}).join(''):'<div class="empty">今天還沒有紀錄</div>'}
+function renderRank(){const d=data();const rows=Array.from({length:24},(_,i)=>{const s=String(i+1).padStart(2,'0');return{s,points:(d[s]||{}).points||0}}).sort((a,b)=>b.points-a.points);document.getElementById('ranking').innerHTML=rows.map(function(x,i){return '<div class="rank"><div class="rankrow"><span class="ranknum">'+(i+1)+'</span><b>座號 '+x.s+'</b></div><b>'+x.points+' 成長值</b></div>'}).join('')}
+function showTab(id,b){document.querySelectorAll('.panel').forEach(function(x){x.classList.remove('show')});document.getElementById(id).classList.add('show');document.querySelectorAll('.tab').forEach(function(x){x.classList.remove('active')});b.classList.add('active');renderLogs();renderRank()}
+renderMine();renderDex();renderLogs();renderRank();
+</script>
+</body>
+</html>

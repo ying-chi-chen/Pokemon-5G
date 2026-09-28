@@ -1,4 +1,10 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>5G 班級寶物</title></head><body><script>
 const parts=[{"path":"site-parts/part-01.html","sha":"424b47702f9651c8650c7b0f6a0e5384f13a54b1"},{"path":"site-parts/part-02.html","sha":"8cef11b7b0ed44f0d759ae937c76b734752d1d56"},{"path":"site-parts/part-03.html","sha":"df2028feb75d7e47030a98639e977a7644ecd149"},{"path":"site-parts/part-04.html","sha":"29fe80764dc47b35fa3d4b0cd138b7dba5591c64"},{"path":"site-parts/part-05.html","sha":"78364bce711beef7e39e2cf7fac245ac65eaa096"},{"path":"site-parts/part-06.html","sha":"e0bb3fd6290f717be7166bfbf4dc32d22ab85bd0"},{"path":"site-parts/part-07.html","sha":"fa54c1cdf3c89a15b02aae29d280f66ec9bb82dc"},{"path":"site-parts/part-08.html","sha":"4911bf9c3c55760f9aa5020f9c390c12d092e921"},{"path":"site-parts/part-09.html","sha":"4c9055842953d9102b2ece591e6e5e622f78a6ac"},{"path":"site-parts/part-10.html","sha":"343ba6e01fe022eba115ddba6ca64f6bffef8799"},{"path":"site-parts/part-11.html","sha":"70d68adff5c8d08d5ea9307bc825c576d9bed779"},{"path":"site-parts/part-12.html","sha":"7ac442b4e1d3fafec66a2d354006fed231243651"},{"path":"site-parts/part-13.html","sha":"fea5332342c3ed2e3639d2ae9883bccf947c0d24"}];
-Promise.all(parts.map(p=>fetch(p.path).then(r=>{if(!r.ok)throw new Error("載入網站內容失敗："+p.path);return r.text()}))).then(x=>{document.open();document.write(x.join(""));document.close()}).catch(e=>{document.body.innerHTML="<pre style=\"font:16px sans-serif;padding:24px\">網站內容載入失敗："+e.message+"</pre>"});
+Promise.all(parts.map(p=>fetch(p.path).then(r=>{if(!r.ok)throw new Error("載入網站內容失敗："+p.path);return r.text()}))).then(x=>{
+  let html=x.join("");
+  html=html.replace(/<button[^>]*>[\\s\\S]*?(?:學生|六隊|XP|任務)[\\s\\S]*?<\\/button>/gi,"");
+  html=html.replace(/<a[^>]*>[\\s\\S]*?(?:學生|六隊|XP|任務)[\\s\\S]*?<\\/a>/gi,"");
+  html=html.replace(/(<nav[^>]*>)/i,'$1<button type="button" class="primary" onclick="location.href=\'pet-mode.html\'">🥚 寵物蛋</button>');
+  document.open();document.write(html);document.close();
+}).catch(e=>{document.body.innerHTML="<pre style=\"font:16px sans-serif;padding:24px\">網站內容載入失敗："+e.message+"</pre>"});
 </script></body></html>

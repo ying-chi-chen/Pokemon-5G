@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#20133d"><title>成語王國｜卡牌抽籤</title>
+<style>
+:root{--gold:#e8c56f;--ink:#24183b;--paper:#fff6df}*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top,#514078,#171128 65%);font-family:system-ui,-apple-system,"Noto Sans TC",sans-serif;color:#fff;min-height:100vh;padding:22px}.wrap{max-width:980px;margin:auto}.top{text-align:center}.top h1{font-size:clamp(30px,6vw,54px);margin:8px 0;color:#ffe6a0;text-shadow:0 3px 0 #71451b}.top p{color:#e9defd}.panel{background:#fff9e9;color:var(--ink);border:5px double #c99b43;border-radius:24px;padding:20px;margin:22px auto;box-shadow:0 18px 45px #0006}.stats{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;color:#68451b;font-weight:700}.pill{background:#f4e4bc;padding:8px 14px;border-radius:30px}.stage{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:18px;align-items:center}.card{min-height:330px;border:5px solid #d9b65e;border-radius:18px;background:linear-gradient(145deg,#fff0c6,#e9d4a0 55%,#fff7dc);color:#40274a;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:18px;box-shadow:inset 0 0 0 3px #fff9,0 8px 18px #49371e35;position:relative;overflow:hidden}.card:before{content:"✦  ✧  ✦";position:absolute;top:12px;color:#b8862e;letter-spacing:14px}.card .symbol{font-size:76px;margin:18px}.card h2{font-size:30px;margin:4px}.card small{color:#8a6630}.back{background:linear-gradient(145deg,#33235c,#16102c);color:#ffe6a0;border-color:#e4c06a}.back .symbol{font-size:82px}.actions{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin:18px 0}.btn{border:0;border-radius:999px;padding:13px 24px;font-size:17px;font-weight:800;cursor:pointer;background:linear-gradient(#f9df94,#d6a94d);color:#38234c;box-shadow:0 4px 0 #91652b}.btn.secondary{background:#e9e0f8;color:#37264f;box-shadow:0 4px 0 #9a87b8}.btn:disabled{opacity:.45;cursor:not-allowed}.note{text-align:center;color:#725b38;font-size:14px;line-height:1.7}.result{min-height:26px;text-align:center;font-weight:800;color:#6d3b13}.foot{text-align:center;color:#d9cbed;font-size:13px;margin:20px}.backlink{color:#ffe6a0;text-decoration:none}.rules{font-size:14px;line-height:1.8;color:#57452c}.rules b{color:#8a4c17}
+@media(max-width:540px){body{padding:12px}.panel{padding:14px}.card{min-height:280px}}
+</style></head><body><main class="wrap"><header class="top"><a class="backlink" href="./index.html">← 返回五己班級冒險基地</a><h1>🏰 成語王國</h1><p>卡牌命運抽籤所・每張卡牌只會在本輪出現一次</p></header>
+<section class="panel"><div class="stats"><span class="pill" id="remaining">本輪剩餘：—</span><span class="pill" id="total">卡牌總數：—</span></div>
+<div class="stage"><div class="card back" id="card"><div class="symbol">👑</div><h2>命運卡牌</h2><small>按下抽卡，揭開今日命運</small></div></div>
+<div class="actions"><button class="btn" id="draw">✨ 抽一張卡</button><button class="btn secondary" id="reset">重新洗牌</button></div><div class="result" id="message" aria-live="polite">準備好迎接挑戰了嗎？</div><p class="note">抽過的卡牌不會在本輪重複；全部抽完後，才可重新洗牌。</p></section>
+<section class="panel rules"><h3>📜 遊戲卡牌規則</h3><p>抽籤池包含：<b>國王卡、騎士卡、惡龍卡、毒藥卡</b>。解藥卡屬於遊戲效果卡，不放入本抽籤池。</p><p>本頁先提供抽籤與不重複機制；每張卡的完整原圖可在後續素材整合時替換進卡面。</p></section>
+<footer class="foot">Pokemon-5G · 五己班級冒險基地</footer></main>
+<script>
+const cards=[
+{name:"國王卡",symbol:"👑",desc:"國王降臨！",kind:"king"},
+{name:"國王卡",symbol:"👑",desc:"國王降臨！",kind:"king"},
+{name:"騎士卡",symbol:"🛡️",desc:"騎士守護！",kind:"knight"},
+{name:"騎士卡",symbol:"🛡️",desc:"騎士守護！",kind:"knight"},
+{name:"惡龍卡・烈焰",symbol:"🐉",desc:"烈焰惡龍出現！",kind:"dragon"},
+{name:"惡龍卡・暗影",symbol:"🐲",desc:"暗影惡龍出現！",kind:"dragon"},
+{name:"惡龍卡・冰霜",symbol:"❄️",desc:"冰霜惡龍出現！",kind:"dragon"},
+{name:"毒藥卡",symbol:"☠️",desc:"毒藥效果觸發！",kind:"poison"}
+];
+let deck=[],drawn=0;
+const cardEl=document.getElementById("card"),msg=document.getElementById("message"),drawBtn=document.getElementById("draw");
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function update(){document.getElementById("remaining").textContent="本輪剩餘："+deck.length;document.getElementById("total").textContent="卡牌總數："+cards.length;drawBtn.disabled=deck.length===0}
+function reset(){deck=shuffle(cards.map((c,i)=>({...c,id:i})));drawn=0;cardEl.className="card back";cardEl.innerHTML='<div class="symbol">👑</div><h2>命運卡牌</h2><small>按下抽卡，揭開今日命運</small>';msg.textContent="已重新洗牌，可以開始抽卡。";update()}
+drawBtn.addEventListener("click",()=>{if(!deck.length)return;const c=deck.pop();drawn++;cardEl.className="card";cardEl.innerHTML='<div class="symbol">'+c.symbol+'</div><h2>'+c.name+'</h2><small>'+c.desc+'</small>';msg.textContent='第 '+drawn+' 張：'+c.name+(deck.length===0?'｜本輪已抽完，請重新洗牌。':'');update()});
+document.getElementById("reset").addEventListener("click",reset);reset();
+</script></body></html>
